@@ -1,0 +1,49 @@
+@page {
+  size: A4;
+  margin: 0;
+}
+
+@media print {
+  html,
+  body,
+  #root {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+  }
+
+  .top-toolbar,
+  .editor-pane,
+  .page-status,
+  .app-alert,
+  .dialog-backdrop {
+    display: none !important;
+  }
+
+  .app-shell,
+  .workspace,
+  .preview-pane,
+  .preview-stage {
+    display: block;
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    overflow: visible;
+    background: #ffffff;
+  }
+
+  .resume-page {
+    width: 210mm;
+    height: 297mm;
+    margin: 0;
+    box-shadow: none;
+    overflow: hidden;
+    transform: none !important;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+}

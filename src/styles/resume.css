@@ -1,0 +1,178 @@
+.resume-page {
+  width: 210mm;
+  height: 297mm;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: 10.5mm 15mm 8.5mm;
+  background: #ffffff;
+  color: #000000;
+  box-shadow: 0 14px 38px rgba(15, 23, 42, 0.18);
+  font-family:
+    "Latin Modern Roman", "LM Roman 10", "CMU Serif", "Computer Modern Serif", Georgia, "Times New Roman", serif;
+  font-size: 10pt;
+  line-height: 1.14;
+}
+
+.resume-page * {
+  box-sizing: border-box;
+}
+
+.resume-header {
+  text-align: center;
+  margin-bottom: 0.14cm;
+}
+
+.resume-header h1 {
+  margin: 0 0 3.5pt;
+  font-size: 21pt;
+  line-height: 1.05;
+  font-weight: 700;
+}
+
+.resume-contact {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0;
+  font-size: 10pt;
+  line-height: 1.22;
+}
+
+.resume-contact .contact-item:not(:last-child)::after {
+  content: "—";
+  padding: 0 13pt;
+  color: #a8a8a8;
+  font-weight: 400;
+}
+
+.resume-contact a {
+  color: #004f90;
+  text-decoration: none;
+}
+
+.contact-item {
+  display: inline-flex;
+  align-items: center;
+}
+
+.contact-icon {
+  width: 10.3pt;
+  height: 10.3pt;
+  margin-right: 3pt;
+  fill: #000000;
+  color: #000000;
+  flex: 0 0 auto;
+}
+
+.contact-icon--linkedin {
+  display: inline-block;
+  width: auto;
+  height: auto;
+  margin-right: 3pt;
+  font-family: Arial, sans-serif;
+  font-size: 10pt;
+  line-height: 1;
+  font-weight: 800;
+}
+
+.resume-section {
+  margin-top: 0.14cm;
+}
+
+.resume-section h2 {
+  margin: 0 0 0.08cm -1pt;
+  border-bottom: 0.45pt solid #000000;
+  padding-bottom: 0.6pt;
+  font-size: 12pt;
+  line-height: 1.12;
+  font-weight: 700;
+}
+
+.resume-section__content {
+  margin: 0;
+}
+
+.summary-text {
+  margin: 0;
+}
+
+.resume-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) max-content;
+  gap: 10mm;
+  align-items: baseline;
+  line-height: 1.15;
+}
+
+.resume-row > :last-child {
+  text-align: right;
+}
+
+.experience-company {
+  margin-top: 0.08cm;
+}
+
+.experience-company:first-child {
+  margin-top: 0;
+}
+
+.company-row {
+  margin-bottom: 0.03cm;
+}
+
+.role-block {
+  margin-top: 0.04cm;
+}
+
+.role-row {
+  margin-bottom: 0;
+}
+
+.resume-highlights {
+  margin: 0.03cm 0 0.03cm 0.78cm;
+  padding: 0;
+  list-style: none;
+}
+
+.resume-highlights li {
+  position: relative;
+  margin: 0;
+  padding-left: 0;
+  line-height: 1.13;
+}
+
+.resume-highlights li::before {
+  content: "◦";
+  position: absolute;
+  left: -0.39cm;
+  top: 0;
+  font-size: 10pt;
+  line-height: 1.16;
+}
+
+.education-entry {
+  margin-top: 0.07cm;
+}
+
+.education-entry:first-child {
+  margin-top: 0;
+}
+
+.education-row + .education-row {
+  margin-top: 0.02cm;
+}
+
+.skills-list {
+  display: grid;
+  gap: 0.075cm;
+}
+
+.skill-line {
+  margin: 0;
+  line-height: 1.16;
+}
+
+.achievements-list {
+  margin-top: 0.03cm;
+}
