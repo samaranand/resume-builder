@@ -1,11 +1,16 @@
 export interface ResumeDocument {
   schemaVersion: 1;
+  document: ResumeMetadata;
   personal: PersonalInfo;
   summary: string;
   experience: CompanyExperience[];
   education: EducationEntry[];
   skills: SkillCategory[];
   achievements: Achievement[];
+}
+
+export interface ResumeMetadata {
+  fileName: string;
 }
 
 export interface PersonalInfo {

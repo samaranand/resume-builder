@@ -20,6 +20,6 @@ describe('resume export', () => {
   });
 
   it('creates a stable filename from the resume name', () => {
-    expect(getExportFileName(sampleResume)).toBe('samar-anand-resume.json');
+    expect(getExportFileName(sampleResume)).toBe('Samar_Anand_Zeta_4yrExp.json');
   });
 });

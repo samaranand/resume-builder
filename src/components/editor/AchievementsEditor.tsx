@@ -8,15 +8,17 @@ import { moveItem, updateAt } from './editorUtils';
 interface AchievementsEditorProps {
   achievements: Achievement[];
   onChange: (achievements: Achievement[]) => void;
+  open: boolean;
+  onToggle: (id: string, open: boolean) => void;
 }
 
 function newAchievement(): Achievement {
   return { id: createId('achievement'), value: 'Describe the achievement.' };
 }
 
-export function AchievementsEditor({ achievements, onChange }: AchievementsEditorProps) {
+export function AchievementsEditor({ achievements, onChange, open, onToggle }: AchievementsEditorProps) {
   return (
-    <EditorSection title="Achievements">
+    <EditorSection id="achievements" title="Achievements" open={open} onToggle={onToggle}>
       <div className="stack">
         {achievements.map((achievement, index) => (
           <div className="highlight-row" key={achievement.id}>

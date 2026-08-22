@@ -5,8 +5,9 @@ export function getResumeJson(resume: ResumeDocument): string {
 }
 
 export function getExportFileName(resume: ResumeDocument): string {
-  const name = resume.personal.name.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-  return `${name || 'resume'}-resume.json`;
+  const fileName = resume.document.fileName.trim() || resume.personal.name || 'resume';
+  const safeName = fileName.replace(/[^\w.-]+/g, '-').replace(/(^-|-$)/g, '');
+  return `${safeName || 'resume'}.json`;
 }
 
 export function downloadResumeJson(resume: ResumeDocument): void {

@@ -25,6 +25,10 @@ function validPersonal(value: unknown): boolean {
   );
 }
 
+function validDocument(value: unknown): boolean {
+  return isRecord(value) && isString(value.fileName);
+}
+
 function validExperience(value: unknown): value is CompanyExperience[] {
   return (
     Array.isArray(value) &&
@@ -80,22 +84,25 @@ export function validateResume(value: unknown): ImportResult {
     return { ok: false, error: 'The selected file does not contain a resume object.' };
   }
 
-  if (value.schemaVersion !== 1) {
+  const candidate = !('document' in value) ? { ...value, document: { fileName: 'resume' } } : value;
+
+  if (candidate.schemaVersion !== 1) {
     return { ok: false, error: 'This resume uses an unsupported schema version.' };
   }
 
   if (
-    !validPersonal(value.personal) ||
-    !isString(value.summary) ||
-    !validExperience(value.experience) ||
-    !validEducation(value.education) ||
-    !validSkills(value.skills) ||
-    !validAchievements(value.achievements)
+    !validDocument(candidate.document) ||
+    !validPersonal(candidate.personal) ||
+    !isString(candidate.summary) ||
+    !validExperience(candidate.experience) ||
+    !validEducation(candidate.education) ||
+    !validSkills(candidate.skills) ||
+    !validAchievements(candidate.achievements)
   ) {
     return { ok: false, error: 'This JSON file is not a valid resume export.' };
   }
 
-  return { ok: true, resume: value as unknown as ResumeDocument };
+  return { ok: true, resume: candidate as unknown as ResumeDocument };
 }
 
 export function parseResumeJson(json: string): ImportResult {

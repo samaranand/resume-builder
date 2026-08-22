@@ -1,4 +1,4 @@
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { ConfirmDialog } from './components/common/ConfirmDialog';
 import { ResumeEditor } from './components/editor/ResumeEditor';
 import { Resume } from './components/resume/Resume';
@@ -12,14 +12,67 @@ import './styles/app.css';
 import './styles/resume.css';
 import './styles/print.css';
 
+type ViewMode = 'editor' | 'split' | 'preview';
+
+const VIEW_MODE_KEY = 'resume-builder:view-mode:v1';
+const SECTION_STATE_KEY = 'resume-builder:editor-sections:v1';
+const DEFAULT_SECTIONS = {
+  personal: true,
+  summary: true,
+  experience: true,
+  education: true,
+  skills: true,
+  achievements: true,
+};
+
+function loadViewMode(): ViewMode {
+  const stored = localStorage.getItem(VIEW_MODE_KEY);
+  return stored === 'editor' || stored === 'preview' || stored === 'split' ? stored : 'split';
+}
+
+function loadSectionState() {
+  try {
+    const stored = localStorage.getItem(SECTION_STATE_KEY);
+    if (!stored) {
+      return DEFAULT_SECTIONS;
+    }
+    const parsed = JSON.parse(stored) as Partial<Record<keyof typeof DEFAULT_SECTIONS, boolean>>;
+    return { ...DEFAULT_SECTIONS, ...parsed };
+  } catch {
+    return DEFAULT_SECTIONS;
+  }
+}
+
 export default function App() {
   const { resume, setResume, resetResume, storageWarning } = useResume();
   const [importError, setImportError] = useState('');
   const [pendingImport, setPendingImport] = useState<ResumeDocument | null>(null);
   const [confirmNewOpen, setConfirmNewOpen] = useState(false);
+  const [viewMode, setViewMode] = useState<ViewMode>(loadViewMode);
+  const [sections, setSections] = useState(loadSectionState);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const resumeRef = useRef<HTMLDivElement | null>(null);
   const exceedsPage = useA4Overflow(resumeRef, resume);
+
+  useEffect(() => {
+    localStorage.setItem(VIEW_MODE_KEY, viewMode);
+  }, [viewMode]);
+
+  useEffect(() => {
+    localStorage.setItem(SECTION_STATE_KEY, JSON.stringify(sections));
+  }, [sections]);
+
+  useEffect(() => {
+    document.title = `${resume.document.fileName || 'resume'} · Resume Builder`;
+  }, [resume.document.fileName]);
+
+  const updateDocumentFileName = (fileName: string) => {
+    setResume({ ...resume, document: { ...resume.document, fileName } });
+  };
+
+  const updateSection = (id: string, open: boolean) => {
+    setSections((current) => ({ ...current, [id]: open }));
+  };
 
   const handleImport = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -47,13 +100,33 @@ export default function App() {
   };
 
   return (
-    <div className="app-shell">
+    <div className={`app-shell app-shell--${viewMode}`}>
       <header className="top-toolbar">
-        <div>
+        <div className="toolbar-brand">
           <h1>Resume Builder</h1>
-          <p>Private by default · Your resume stays in this browser.</p>
+          <label className="filename-field">
+            <span>File name</span>
+            <input
+              value={resume.document.fileName}
+              onChange={(event) => updateDocumentFileName(event.target.value)}
+              placeholder="Samar_Anand_Resume"
+              aria-label="Resume file name"
+            />
+          </label>
         </div>
-        <div className="toolbar-actions">
+        <div className="toolbar-center">
+          <div className="view-switcher" aria-label="View mode">
+            <button type="button" className={viewMode === 'editor' ? 'is-active' : ''} onClick={() => setViewMode('editor')}>
+              Editor
+            </button>
+            <button type="button" className={viewMode === 'split' ? 'is-active' : ''} onClick={() => setViewMode('split')}>
+              Editor + PDF
+            </button>
+            <button type="button" className={viewMode === 'preview' ? 'is-active' : ''} onClick={() => setViewMode('preview')}>
+              PDF only
+            </button>
+          </div>
+          <div className="toolbar-actions">
           <button type="button" className="button button--secondary" onClick={() => setConfirmNewOpen(true)}>
             New
           </button>
@@ -67,6 +140,7 @@ export default function App() {
             Download PDF
           </button>
           <input ref={fileInputRef} className="visually-hidden" type="file" accept="application/json,.json" onChange={handleImport} />
+          </div>
         </div>
         <div className="toolbar-status">
           <span>{storageWarning || 'Saved locally'}</span>
@@ -78,7 +152,7 @@ export default function App() {
 
       <main className="workspace">
         <section className="editor-pane" aria-label="Resume editor">
-          <ResumeEditor resume={resume} onChange={setResume} />
+          <ResumeEditor resume={resume} onChange={setResume} sections={sections} onSectionToggle={updateSection} />
         </section>
         <section className="preview-pane" aria-label="Resume preview">
           <div className={`page-status ${exceedsPage ? 'page-status--error' : 'page-status--ok'}`}>

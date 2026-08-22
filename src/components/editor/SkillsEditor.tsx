@@ -8,15 +8,17 @@ import { moveItem, updateAt } from './editorUtils';
 interface SkillsEditorProps {
   skills: SkillCategory[];
   onChange: (skills: SkillCategory[]) => void;
+  open: boolean;
+  onToggle: (id: string, open: boolean) => void;
 }
 
 function newSkill(): SkillCategory {
   return { id: createId('skill'), name: 'Category', value: 'Skill one, Skill two' };
 }
 
-export function SkillsEditor({ skills, onChange }: SkillsEditorProps) {
+export function SkillsEditor({ skills, onChange, open, onToggle }: SkillsEditorProps) {
   return (
-    <EditorSection title="Skills">
+    <EditorSection id="skills" title="Skills" open={open} onToggle={onToggle}>
       <div className="stack">
         {skills.map((skill, index) => (
           <div className="editor-card" key={skill.id}>

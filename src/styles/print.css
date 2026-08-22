@@ -24,6 +24,8 @@
 
   .app-shell,
   .workspace,
+  .app-shell--editor .preview-pane,
+  .app-shell--preview .preview-pane,
   .preview-pane,
   .preview-stage {
     display: block;

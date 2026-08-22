@@ -5,13 +5,15 @@ import { Field } from './Field';
 interface PersonalEditorProps {
   personal: PersonalInfo;
   onChange: (personal: PersonalInfo) => void;
+  open: boolean;
+  onToggle: (id: string, open: boolean) => void;
 }
 
-export function PersonalEditor({ personal, onChange }: PersonalEditorProps) {
+export function PersonalEditor({ personal, onChange, open, onToggle }: PersonalEditorProps) {
   const update = (key: keyof PersonalInfo, value: string) => onChange({ ...personal, [key]: value });
 
   return (
-    <EditorSection title="Personal Information">
+    <EditorSection id="personal" title="Personal Information" open={open} onToggle={onToggle}>
       <div className="field-grid">
         <Field label="Name" value={personal.name} onChange={(value) => update('name', value)} />
         <Field label="Location" value={personal.location} onChange={(value) => update('location', value)} />

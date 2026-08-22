@@ -25,4 +25,13 @@ describe('resume import', () => {
     expect(result.ok).toBe(false);
     expect(result.error).toBe('This resume uses an unsupported schema version.');
   });
+
+  it('migrates older valid exports without document metadata', () => {
+    const legacyResume: Record<string, unknown> = { ...sampleResume };
+    delete legacyResume.document;
+    const result = parseResumeJson(JSON.stringify(legacyResume));
+
+    expect(result.ok).toBe(true);
+    expect(result.resume?.document.fileName).toBe('resume');
+  });
 });

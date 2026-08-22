@@ -20,6 +20,23 @@ There is no backend, API, authentication, database, analytics, telemetry, or clo
 resume-builder:v1
 ```
 
+Editor layout preferences are also local-only:
+
+```text
+resume-builder:view-mode:v1
+resume-builder:editor-sections:v1
+```
+
+## Editing Experience
+
+The toolbar supports three modes:
+
+- `Editor`
+- `Editor + PDF`
+- `PDF only`
+
+Editor sections remember whether they were open or closed. The file name field controls the JSON export name and browser document title used by the print dialog.
+
 ## GitHub Pages
 
 The production build emits static files in `dist/`. The Vite base path defaults to relative assets so the app works under:
@@ -43,4 +60,4 @@ Use `Download PDF` to open the browser print dialog, then choose `Save as PDF`. 
 
 ## Rendering Notes
 
-The resume CSS mirrors the supplied LaTeX geometry, section order, dense spacing, heading rules, circular bullets, and right-aligned date/location rows. Browser print engines do not ship TeX's exact Latin Modern metrics by default, so the stylesheet prefers local Latin Modern or Computer Modern fonts when installed and falls back to serif system fonts without remote font loading.
+The resume CSS mirrors the supplied LaTeX geometry, section order, dense spacing, heading rules, circular bullets, and right-aligned date/location rows. Latin Modern Roman OpenType fonts are bundled locally under `src/assets/fonts/latin-modern` from the CTAN `lm` package, licensed under the GUST Font License. No remote font loading is required at runtime.

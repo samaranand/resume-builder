@@ -8,6 +8,8 @@ import { moveItem, updateAt } from './editorUtils';
 interface EducationEditorProps {
   education: EducationEntry[];
   onChange: (education: EducationEntry[]) => void;
+  open: boolean;
+  onToggle: (id: string, open: boolean) => void;
 }
 
 function newEducation(): EducationEntry {
@@ -21,9 +23,9 @@ function newEducation(): EducationEntry {
   };
 }
 
-export function EducationEditor({ education, onChange }: EducationEditorProps) {
+export function EducationEditor({ education, onChange, open, onToggle }: EducationEditorProps) {
   return (
-    <EditorSection title="Education">
+    <EditorSection id="education" title="Education" open={open} onToggle={onToggle}>
       <div className="stack">
         {education.map((entry, index) => (
           <div className="editor-card" key={entry.id}>

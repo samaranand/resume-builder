@@ -8,6 +8,8 @@ import { moveItem, updateAt } from './editorUtils';
 interface ExperienceEditorProps {
   experience: CompanyExperience[];
   onChange: (experience: CompanyExperience[]) => void;
+  open: boolean;
+  onToggle: (id: string, open: boolean) => void;
 }
 
 function newRole(): Role {
@@ -29,13 +31,13 @@ function newCompany(): CompanyExperience {
   };
 }
 
-export function ExperienceEditor({ experience, onChange }: ExperienceEditorProps) {
+export function ExperienceEditor({ experience, onChange, open, onToggle }: ExperienceEditorProps) {
   const updateCompany = (companyIndex: number, updater: (company: CompanyExperience) => CompanyExperience) => {
     onChange(updateAt(experience, companyIndex, updater));
   };
 
   return (
-    <EditorSection title="Experience">
+    <EditorSection id="experience" title="Experience" open={open} onToggle={onToggle}>
       <div className="stack">
         {experience.map((company, companyIndex) => (
           <div className="editor-card" key={company.id}>

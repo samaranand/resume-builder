@@ -2,6 +2,9 @@ import type { ResumeDocument } from '../types/resume';
 
 export const sampleResume: ResumeDocument = {
   schemaVersion: 1,
+  document: {
+    fileName: 'Samar_Anand_Zeta_4yrExp',
+  },
   personal: {
     name: 'Samar Anand',
     location: 'Bengaluru, India',
