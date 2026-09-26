@@ -1,5 +1,6 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { ConfirmDialog } from './components/common/ConfirmDialog';
+import { NewResumeDialog } from './components/common/NewResumeDialog';
 import { ResumeEditor } from './components/editor/ResumeEditor';
 import { Resume } from './components/resume/Resume';
 import { sampleResume } from './data/sampleResume';
@@ -177,13 +178,14 @@ export default function App() {
         onCancel={() => setPendingImport(null)}
       />
 
-      <ConfirmDialog
+      <NewResumeDialog
         open={confirmNewOpen}
-        title="Start a new resume?"
-        message="This will replace the current resume with the default local sample."
-        confirmLabel="New Resume"
-        onConfirm={() => {
-          resetResume();
+        onSelectBlank={() => {
+          resetResume('blank');
+          setConfirmNewOpen(false);
+        }}
+        onSelectSample={() => {
+          resetResume('sample');
           setConfirmNewOpen(false);
         }}
         onCancel={() => setConfirmNewOpen(false)}

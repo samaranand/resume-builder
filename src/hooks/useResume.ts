@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
+import { blankResume } from '../data/blankResume';
 import { sampleResume } from '../data/sampleResume';
-import { loadStoredResume, persistResume } from '../lib/resumeStorage';
+import { clearStoredResume, loadStoredResume, persistResume } from '../lib/resumeStorage';
 import type { ResumeDocument } from '../types/resume';
 
 export function useResume() {
@@ -16,8 +17,11 @@ export function useResume() {
     }
   }, [resume]);
 
-  const resetResume = useCallback(() => {
-    setResume(sampleResume);
+  const resetResume = useCallback((template: 'blank' | 'sample' = 'blank') => {
+    clearStoredResume();
+    const templateData = template === 'sample' ? sampleResume : blankResume;
+    const freshData = JSON.parse(JSON.stringify(templateData)) as ResumeDocument;
+    setResume(freshData);
   }, []);
 
   return { resume, setResume, resetResume, storageWarning };
